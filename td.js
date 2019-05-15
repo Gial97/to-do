@@ -1,16 +1,15 @@
 let $list;
 let $newTask;
 let $addButton;
-let $editTask;
 
-function main(){
+function main() {
     $list = document.getElementById('task');
     $newTask = document.getElementById('write-task');
     $addButton = document.getElementById('add-task');
 
     $addButton.addEventListener('click', addImput);
     $list.addEventListener('click', taskCilck);
-    
+
     getTodos();
 }
 
@@ -24,10 +23,14 @@ function getTodos() {
         })
 }
 
-function addTask(list, text, id){
+function addTask(list, text, id) {
+    //let iconno = document.createElement('i')
+
+    //iconno.classList.add('far fa-circle')
+
     let newElement = document.createElement('li');
 
-    newElement.dataset.id =id;
+    newElement.dataset.id = id;
 
     let textElement = document.createElement('span');
 
@@ -43,7 +46,7 @@ function addTask(list, text, id){
     delteButton.textContent = 'Usuń';
     delteButton.classList.add('delte');
 
-    let acceptButton = document.createElement('button'); 
+    let acceptButton = document.createElement('button');
 
     acceptButton.textContent = 'Zatwierdz';
     acceptButton.classList.add('accept');
@@ -58,53 +61,63 @@ function addTask(list, text, id){
     newElement.appendChild(acceptButton);
     newElement.appendChild(editButton);
     newElement.appendChild(delteButton)
+    //newElement.appendChild(iconno);
 
 
     list.appendChild(newElement);
 }
 
 function addImput() {
-    let  newTask = $newTask.value;
-    if(newTask) {
+    let newTask = $newTask.value;
+    if (newTask) {
         axios.post('http://195.181.210.249:3000/todo/', {
             title: newTask,
             author: 'Mateusz.N'
         })
-        .then(function () {
-            $list.innerHTML = '';
-            getTodos();
-    })
+            .then(function () {
+                $list.innerHTML = '';
+                getTodos();
+            })
         $newTask.value = "";
     }
 }
 
-function delteClickButton(event){
-    let $all = 
-    $textElement.textContent.value = '';
+function delteClickButton(event) {
+    delteTask(event);
 }
 
-function editingTask (event){
-        let editTask = event.target.parentElement.getElementsByTagName('span')[0];
-        let newName = editTask.textContent;
-        let newId = '504';
-        debugger;
-        axios.put('http://195.181.210.249:3000/todo/85', {
-            title: newName,
-            author: 'Mateusz.N',
-            id: newId
-        })
+function delteTask(event) {
+    let delTask = event.target.parentElement.getElementsByTagName('span')[0];
+    let newId = delTask.parentElement.getAttribute('data-id');
+    let adres = 'http://195.181.210.249:3000/todo/';
+    let string = adres + newId;
+    axios.delete(string, {
+    })
+    window.setTimeout("location.reload()",200)
+}
+
+function editingTask(event) {
+    let editTask = event.target.parentElement.getElementsByTagName('span')[0];
+    let newName = editTask.textContent;
+    let newId = editTask.parentElement.getAttribute('data-id');
+    let adres = 'http://195.181.210.249:3000/todo/';
+    let string = adres + newId;
+    axios.put(string, {
+        title: newName,
+        author: 'Mateusz.N',
+    })
 }
 
 
-function taskCilck(event){
-    if(event.target.classList.contains('edit')) {
+function taskCilck(event) {
+    if (event.target.classList.contains('edit')) {
         editClickButton(event);
-    } else if(event.target.classList.contains('accept')) {
+    } else if (event.target.classList.contains('accept')) {
         acceptClickButton(event);
-    } else if(event.target.classList.contains('delte')) {
+    } else if (event.target.classList.contains('delte')) {
         delteClickButton(event);
     } else {
-        if(event.target.tagName === 'LI') {
+        if (event.target.tagName === 'LI') {
             event.target.classList.toggle('corect');
         } else {
             event.target.parentElement.classList.toggle('corect');
@@ -112,7 +125,7 @@ function taskCilck(event){
     }
 }
 
-function editClickButton(event){
+function editClickButton(event) {
     let $textElement = event.target.parentElement.getElementsByTagName('span')[0];
     let $changeInput = event.target.parentElement.getElementsByTagName('input')[0];
     let acceptButton = event.target.parentElement.getElementsByClassName('accept')[0];
@@ -128,7 +141,7 @@ function editClickButton(event){
 
 }
 
-function acceptClickButton(event){
+function acceptClickButton(event) {
     let $changeInput = event.target.parentElement.getElementsByTagName('input')[0];
     let $acceptButton = event.target.parentElement.getElementsByClassName('accept')[0];
     let delteButton = event.target.parentElement.getElementsByClassName('delte')[0];
