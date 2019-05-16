@@ -18,19 +18,16 @@ function getTodos() {
         .then(response => response.data)
         .then(data => {
             data.forEach(element => {
-                addTask($list, element.title, element.id)
+                addTask($list, element.title, element.id, element.parent_todo_id)
             });
         })
 }
 
-function addTask(list, text, id) {
-    //let iconno = document.createElement('i')
-
-    //iconno.classList.add('far fa-circle')
-
+function addTask(list, text, id, parent_todo_id) {
     let newElement = document.createElement('li');
 
     newElement.dataset.id = id;
+    newElement.parentId = parent_todo_id;
 
     let textElement = document.createElement('span');
 
@@ -38,22 +35,23 @@ function addTask(list, text, id) {
 
     let editButton = document.createElement('button');
 
-    editButton.textContent = 'Edytuj';
+    editButton.textContent = '🖍';
     editButton.classList.add('edit');
 
     let delteButton = document.createElement('button');
 
-    delteButton.textContent = 'Usuń';
+    delteButton.textContent = '❌';
     delteButton.classList.add('delte');
 
     let acceptButton = document.createElement('button');
 
-    acceptButton.textContent = 'Zatwierdz';
+    acceptButton.textContent = '✔';
     acceptButton.classList.add('accept');
     acceptButton.style.display = 'none';
 
     let changeInput = document.createElement('input');
     changeInput.style.display = 'none';
+    
 
     newElement.appendChild(textElement);
     newElement.appendChild(changeInput);
@@ -61,7 +59,6 @@ function addTask(list, text, id) {
     newElement.appendChild(acceptButton);
     newElement.appendChild(editButton);
     newElement.appendChild(delteButton)
-    //newElement.appendChild(iconno);
 
 
     list.appendChild(newElement);
@@ -108,6 +105,19 @@ function editingTask(event) {
     })
 }
 
+function corectSent(event) {
+    let editTask = event.target.parentElement.getElementsByTagName('span')[0];
+    let newName = editTask.textContent;
+    let newId = editTask.parentElement.getAttribute('data-id');
+    let adres = 'http://195.181.210.249:3000/todo/';
+    let string = adres + newId;
+    axios.put(string, {
+        title: newName,
+        author: 'Mateusz.N',
+        parent_todo_id: '1',
+})
+}
+
 
 function taskCilck(event) {
     if (event.target.classList.contains('edit')) {
@@ -119,8 +129,7 @@ function taskCilck(event) {
     } else {
         if (event.target.tagName === 'LI') {
             event.target.classList.toggle('corect');
-        } else {
-            event.target.parentElement.classList.toggle('corect');
+            corectSent(event);
         }
     }
 }

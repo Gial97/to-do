@@ -1,8 +1,51 @@
+
 .corect {
+    list-style-image: url(check-mark-button.png);
     color: green;
 }
 li {
     font-size: 20px;
     font-weight: bold;
-    list-style-type:none; 
+    list-style-image: url(circle-shape-outline.png);
+    border-bottom-width: 1px;
+    border-bottom-style: groove;
+    
+}
+h1 {
+    display: flex;
+    justify-content: center;
+    font-size: 50px;
+    color:gray;
+}
+#enter{
+    display: flex;
+    justify-content: center;
+}
+#enter button{
+    font-size: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+    text-align: center;
+    background-color: white;
+}
+input {
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+}
+.edit {
+    border: 0px;
+    background-color: white;
+    margin-left: 10%;
+    font-size:15px;
+}
+.delte {
+    border: 0px;
+    background-color: white;
+    font-size: 15px;
+}
+.accept {
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: white;
+    font-size: 15px;
 }

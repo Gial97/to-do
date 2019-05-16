@@ -2,18 +2,16 @@
 <html lang="pl-PL">
     <head>
         <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-         integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
-         crossorigin="anonymous">
         <meta charset="utf-8">
         <title>To - Do</title>
     </head>
     <body>
         <h1>Zadania</h1>
-        <input id="write-task">
-        <button id="add-task">Dodaj</button>
+        <div id="enter">
+            <input id="write-task">
+            <button  id="add-task">➕</button>
+        </div>
         <ul id="task">
-            <li><i class="far fa-circle"></i></li>
         </ul>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="td.js"></script>
