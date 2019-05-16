@@ -18,16 +18,16 @@ function getTodos() {
         .then(response => response.data)
         .then(data => {
             data.forEach(element => {
-                addTask($list, element.title, element.id, element.parent_todo_id)
+                addTask($list, element.title, element.id, element.extra)
             });
         })
 }
 
-function addTask(list, text, id, parent_todo_id) {
+function addTask(list, text, id, extra) {
     let newElement = document.createElement('li');
 
     newElement.dataset.id = id;
-    newElement.parentId = parent_todo_id;
+    newElement.dataset.extra = extra;
 
     let textElement = document.createElement('span');
 
@@ -90,7 +90,11 @@ function delteTask(event) {
     let string = adres + newId;
     axios.delete(string, {
     })
-    window.setTimeout("location.reload()",200)
+    .then(function () {
+        $list.innerHTML = '';
+        getTodos();
+    })
+$newTask.value = "";
 }
 
 function editingTask(event) {
@@ -99,6 +103,7 @@ function editingTask(event) {
     let newId = editTask.parentElement.getAttribute('data-id');
     let adres = 'http://195.181.210.249:3000/todo/';
     let string = adres + newId;
+    debugger;g
     axios.put(string, {
         title: newName,
         author: 'Mateusz.N',
@@ -111,11 +116,20 @@ function corectSent(event) {
     let newId = editTask.parentElement.getAttribute('data-id');
     let adres = 'http://195.181.210.249:3000/todo/';
     let string = adres + newId;
-    axios.put(string, {
+    let extra = editTask.parentElement.getAttribute('data-con');
+    debugger;
+    if (extra != 'true'){
+        axios.put(string, {
         title: newName,
         author: 'Mateusz.N',
-        parent_todo_id: '1',
-})
+        extra: 'true',
+    })}else {
+        axios.put(string, {
+            title: newName,
+            author: 'Mateusz.N',
+            extra: 'false',
+            })
+        }
 }
 
 
@@ -133,6 +147,7 @@ function taskCilck(event) {
         }
     }
 }
+
 
 function editClickButton(event) {
     let $textElement = event.target.parentElement.getElementsByTagName('span')[0];
@@ -165,9 +180,6 @@ function acceptClickButton(event) {
     delteButton.style.display = 'inline-block';
 
     editingTask(event);
-
 }
-
-
 
 document.addEventListener('DOMContentLoaded', main);
